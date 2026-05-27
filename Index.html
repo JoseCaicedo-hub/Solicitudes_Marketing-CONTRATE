@@ -1,0 +1,3161 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <base target="_top" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CONTRATE | Acceso corporativo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-1: #fff5ea;
+        --bg-2: #ffe0bf;
+        --bg-3: #ffb366;
+        --surface: rgba(255, 255, 255, 0.78);
+        --surface-strong: #ffffff;
+        --text: #2a1b10;
+        --muted: #7a5a3e;
+        --brand: #f28c28;
+        --brand-dark: #d96f0b;
+        --brand-soft: #ffe2c2;
+        --success: #1f8f5f;
+        --warning: #b97900;
+        --danger: #c94a31;
+        --shadow: 0 24px 70px rgba(171, 102, 24, 0.18);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: #fff1e1;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: transparent;
+        opacity: 0;
+      }
+
+      .app-shell {
+        position: relative;
+        min-height: 100%;
+        padding: 32px;
+      }
+
+      .topbar {
+        max-width: 1240px;
+        margin: 0 auto 24px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        position: sticky;
+        top: 16px;
+        z-index: 60;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: rgba(255, 246, 235, 0.82);
+        backdrop-filter: blur(14px);
+        transition: transform 0.22s ease, opacity 0.22s ease;
+      }
+
+      .topbar.is-hidden {
+        transform: translateY(-120%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .topbar.hidden {
+        display: none;
+      }
+
+      .topbar-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .nav-btn {
+        border: 1px solid rgba(242, 140, 40, 0.18);
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--brand-dark);
+        border-radius: 12px;
+        padding: 10px 14px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(242, 140, 40, 0.14);
+        background: #fff;
+      }
+
+      .nav-btn.primary {
+        background: linear-gradient(145deg, #ffb35a 0%, #f28c28 55%, #d96f0b 100%);
+        color: #fff;
+      }
+
+      .nav-btn.active {
+        background: linear-gradient(145deg, #ffb35a 0%, #f28c28 55%, #d96f0b 100%);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(242, 140, 40, 0.22);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(242, 140, 40, 0.18);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .hero-grid {
+        max-width: 1240px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--surface);
+        border: 1px solid rgba(242, 140, 40, 0.16);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        border-radius: var(--radius-xl);
+      }
+
+      .login-panel {
+        padding: 34px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .welcome-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100%;
+      }
+
+      .form-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .login-panel::after {
+        content: "";
+        position: absolute;
+        inset: auto -70px -120px auto;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(242, 140, 40, 0.24), transparent 70%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .headline {
+        margin: 18px 0 10px;
+        font-size: clamp(34px, 4vw, 58px);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+      }
+
+      .subheadline {
+        margin: 0;
+        max-width: 620px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .login-form {
+        margin-top: 28px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      input,
+      select {
+        width: 100%;
+        border: 1px solid rgba(242, 140, 40, 0.24);
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text);
+        border-radius: 16px;
+        padding: 15px 16px;
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+        font: inherit;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: rgba(242, 140, 40, 0.9);
+        box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.15);
+      }
+
+      .actions-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: 4px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 16px;
+        padding: 14px 18px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(145deg, #ffb35a 0%, #f28c28 55%, #d96f0b 100%);
+        color: white;
+        box-shadow: 0 18px 34px rgba(242, 140, 40, 0.24);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.88);
+        color: var(--brand-dark);
+        border: 1px solid rgba(242, 140, 40, 0.18);
+      }
+
+      .helper {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .dashboard {
+        max-width: 1240px;
+        margin: 0 auto;
+        display: none;
+        gap: 20px;
+      }
+
+      .dashboard.active {
+        display: grid;
+      }
+
+      #dashboardView[data-psychology-view='form'] #psychologyRecordsSection,
+      #dashboardView[data-psychology-view='records'] #psychologyFormSection {
+        display: none !important;
+      }
+
+      .dashboard-header {
+        padding: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .dashboard-title h2,
+      .dashboard-title p {
+        margin: 0;
+      }
+
+      .dashboard-title h2 {
+        font-size: 28px;
+        letter-spacing: -0.04em;
+        margin-bottom: 6px;
+      }
+
+      .dashboard-title p {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .dashboard-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+      }
+
+      .psychology-stats-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .card {
+        padding: 22px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.84);
+        border: 1px solid rgba(242, 140, 40, 0.14);
+        box-shadow: 0 12px 36px rgba(171, 102, 24, 0.08);
+      }
+
+      .card h3 {
+        margin: 0 0 16px;
+        font-size: 18px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .stat {
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #fffdf9, #fff2e2);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+      }
+
+      .stat .value {
+        font-size: 32px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        color: var(--brand-dark);
+      }
+
+      .stat .label {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .task-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .task {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(255, 248, 239, 0.95);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+      }
+
+      .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        margin-top: 5px;
+        background: var(--brand);
+        box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.16);
+        flex: none;
+      }
+
+      .task strong,
+      .task span {
+        display: block;
+      }
+
+      .task span {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 3px;
+        line-height: 1.5;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .list-item {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+      }
+
+      .list-item strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .list-item small {
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .login-error {
+        display: none;
+        margin-top: 6px;
+        color: var(--danger);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .login-error.show {
+        display: block;
+      }
+
+      .create-user-panel {
+        display: grid;
+        gap: 14px;
+        margin-top: 6px;
+        padding: 18px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(242, 140, 40, 0.14);
+      }
+
+      .create-user-panel-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .create-user-panel-header h3,
+      .create-user-panel-header p {
+        margin: 0;
+      }
+
+      .create-user-panel-header h3 {
+        font-size: 18px;
+      }
+
+      .create-user-panel-header p,
+      .create-user-note {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .create-user-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .create-user-fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .create-user-role-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .inline-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .create-user-message {
+        display: none;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .create-user-message.show {
+        display: block;
+      }
+
+      .create-user-message.success {
+        background: rgba(31, 143, 95, 0.12);
+        color: var(--success);
+      }
+
+      .create-user-message.error {
+        background: rgba(201, 74, 49, 0.12);
+        color: var(--danger);
+      }
+
+      .create-user-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .welcome-banner {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .welcome-box {
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 245, 231, 0.9));
+        border: 1px solid rgba(242, 140, 40, 0.14);
+      }
+
+      .welcome-box h4,
+      .welcome-box p {
+        margin: 0;
+      }
+
+      .welcome-box h4 {
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      .welcome-box p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .accent {
+        color: var(--brand-dark);
+        font-weight: 800;
+      }
+
+      .dashboard-shell {
+        max-width: 1240px;
+        margin: 0 auto;
+        display: grid;
+        gap: 20px;
+      }
+
+      .role-dashboard {
+        display: none;
+        gap: 20px;
+      }
+
+      .role-dashboard.active {
+        display: grid;
+      }
+
+      .hero-stats,
+      .stats-grid,
+      .form-grid,
+      .records-list,
+      .pagination {
+        display: grid;
+        gap: 14px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat-card {
+        padding: 20px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #fffdf9, #fff1df);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+      }
+
+      .stat-card .value {
+        font-size: 34px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        color: var(--brand-dark);
+      }
+
+      .stat-card .label {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .form-card,
+      .records-card {
+        padding: 24px;
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.84);
+        border: 1px solid rgba(242, 140, 40, 0.14);
+        box-shadow: 0 12px 36px rgba(171, 102, 24, 0.08);
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        resize: vertical;
+        border: 1px solid rgba(242, 140, 40, 0.24);
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text);
+        border-radius: 16px;
+        padding: 15px 16px;
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+        font: inherit;
+      }
+
+      textarea:focus {
+        border-color: rgba(242, 140, 40, 0.9);
+        box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.15);
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      .field-error {
+        display: none;
+        color: var(--danger);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .field-error.show {
+        display: block;
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: 6px;
+      }
+
+      .toast {
+        display: none;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(31, 143, 95, 0.12);
+        color: var(--success);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .toast.show {
+        display: inline-flex;
+      }
+
+      .app-notification {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 120;
+        min-width: 240px;
+        max-width: min(92vw, 420px);
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(242, 140, 40, 0.18);
+        box-shadow: 0 18px 42px rgba(171, 102, 24, 0.18);
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.45;
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .app-notification.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .app-notification.success {
+        border-color: rgba(31, 143, 95, 0.22);
+        background: rgba(229, 251, 240, 0.98);
+      }
+
+      .app-notification.error {
+        border-color: rgba(201, 74, 49, 0.22);
+        background: rgba(255, 239, 235, 0.98);
+      }
+
+      .app-notification.info {
+        border-color: rgba(242, 140, 40, 0.22);
+        background: rgba(255, 247, 238, 0.98);
+      }
+
+      .records-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .records-count {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .record-card {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 248, 239, 0.96);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+        display: grid;
+        gap: 12px;
+      }
+
+      .record-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .record-head h4,
+      .record-head p {
+        margin: 0;
+      }
+
+      .record-head > div,
+      .status-row > div {
+        min-width: 0;
+      }
+
+      .record-head h4 {
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+
+      .record-head p,
+      .record-meta,
+      .record-description {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .record-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .record-field {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(242, 140, 40, 0.1);
+      }
+
+      .record-field strong {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--brand-dark);
+        margin-bottom: 4px;
+      }
+
+      .record-field span {
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .status-pill.in-process {
+        background: #fff0d9;
+        color: #8b4e00;
+      }
+
+      .status-pill.completed {
+        background: #e5fbf0;
+        color: #16603f;
+      }
+
+      .record-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .marketing-copy-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+      }
+
+      .marketing-copy-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .marketing-export-box {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(242, 140, 40, 0.12);
+      }
+
+      .marketing-export-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--brand-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .marketing-export-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .marketing-export-row .field {
+        margin: 0;
+      }
+
+      .marketing-export-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn-small {
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+      }
+
+      .btn-complete {
+        background: linear-gradient(145deg, #3fc58b, #1f8f5f);
+        color: #fff;
+      }
+
+      .btn-process {
+        background: linear-gradient(145deg, #ffcb77, #f28c28);
+        color: #fff;
+      }
+
+      .btn-copy-record {
+        width: 100%;
+        background: linear-gradient(145deg, #ffb35a 0%, #f28c28 55%, #d96f0b 100%);
+        color: #fff;
+        box-shadow: 0 16px 30px rgba(242, 140, 40, 0.28);
+        border: 1px solid rgba(217, 111, 11, 0.18);
+        font-size: 14px;
+        letter-spacing: 0.03em;
+      }
+
+      .btn-copy-record:hover {
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 18px 34px rgba(242, 140, 40, 0.34);
+      }
+
+      .pagination {
+        grid-template-columns: auto auto auto auto;
+        justify-content: start;
+        align-items: center;
+        margin-top: 16px;
+      }
+
+      .toolbar-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .toolbar-inline select {
+        min-width: 180px;
+      }
+
+      .gallery-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .gallery-card {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 248, 239, 0.96);
+        border: 1px solid rgba(242, 140, 40, 0.12);
+        display: grid;
+        gap: 12px;
+      }
+
+      .gallery-card.active {
+        border-color: rgba(242, 140, 40, 0.35);
+        box-shadow: 0 10px 24px rgba(242, 140, 40, 0.12);
+      }
+
+      .gallery-card h4,
+      .gallery-card p {
+        margin: 0;
+      }
+
+      .gallery-card h4 {
+        font-size: 18px;
+      }
+
+      .gallery-card p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .gallery-meta {
+        display: grid;
+        gap: 6px;
+      }
+
+      .gallery-meta span {
+        font-size: 13px;
+        color: var(--text);
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .detail-empty {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 248, 239, 0.8);
+        border: 1px dashed rgba(242, 140, 40, 0.22);
+        color: var(--muted);
+      }
+
+      .detail-box {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(242, 140, 40, 0.1);
+      }
+
+      .detail-box strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--brand-dark);
+      }
+
+      .detail-box span {
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .marketing-layout {
+        display: grid;
+        gap: 20px;
+      }
+
+      .psychology-records-section,
+      .marketing-records-section {
+        display: grid;
+        gap: 20px;
+        margin-top: 24px;
+      }
+
+      .psychology-form-section {
+        display: grid;
+        gap: 20px;
+        margin-top: 24px;
+      }
+
+      .section-anchor {
+        scroll-margin-top: 120px;
+      }
+
+      .psychology-records-workspace,
+      .marketing-records-workspace {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 20px;
+      }
+
+      .records-editor-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .editor-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 4px;
+      }
+
+      .editor-meta {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .marketing-sidebar {
+        display: grid;
+        gap: 20px;
+      }
+
+      .marketing-gallery-card {
+        padding: 20px;
+      }
+
+      .marketing-top-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .date-filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .date-filter-row input {
+        min-width: 180px;
+      }
+
+      .page-info {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .empty-state {
+        padding: 22px;
+        border-radius: 18px;
+        border: 1px dashed rgba(242, 140, 40, 0.24);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      @media (max-width: 1080px) {
+        .hero-grid,
+        .welcome-banner,
+        .field-grid,
+        .stats,
+        .hero-stats,
+        .stats-grid,
+        .form-grid,
+        .record-grid,
+        .content-grid,
+        .marketing-top-stats,
+        .psychology-records-workspace,
+        .marketing-records-workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .pagination {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .app-shell {
+          padding: 18px;
+        }
+
+        .login-panel,
+        .dashboard-header,
+        .card {
+          padding: 18px;
+        }
+
+        .headline {
+          font-size: 34px;
+        }
+
+        .records-toolbar,
+        .record-head,
+        .dashboard-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .pagination {
+          grid-template-columns: 1fr;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="app-notification" id="appNotification" aria-live="polite" aria-atomic="true"></div>
+      <header class="topbar hidden" id="appTopbar">
+            <nav class="topbar-nav" id="topbarNav">
+              <button class="nav-btn primary active" type="button" id="navFormBtn">Ver formulario</button>
+              <button class="nav-btn" type="button" id="navRecordsBtn">Ver registros</button>
+            </nav>
+            <div class="pill" id="sessionPill">Portal corporativo seguro</div>
+          </header>
+
+      <section id="loginView" class="hero-grid">
+        <div class="panel login-panel welcome-panel">
+          <span class="eyebrow">Ingreso interno</span>
+          <h2 class="headline">Bienvenido al panel de CONTRATE</h2>
+          <p class="subheadline">Accede al formulario de psicología o al panel de marketing según tu perfil.</p>
+        </div>
+
+        <div class="panel login-panel form-panel">
+          <form class="login-form" id="loginForm">
+            <div class="field-grid">
+              <div class="field">
+                <label for="role">Rol</label>
+                <select id="role" required>
+                  <option value="psicologia">Psicologia</option>
+                  <option value="marketing">Marketing</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="email">Correo corporativo</label>
+                <input id="email" type="email" placeholder="nombre@contrate.com" autocomplete="username" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="password">Contraseña</label>
+              <input id="password" type="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required />
+            </div>
+
+            <div class="actions-row">
+              <button class="btn btn-primary" type="submit">Entrar al sistema</button>
+              <button class="btn btn-secondary" type="button" id="openCreateUserBtn">Regístrate</button>
+            </div>
+            <div class="login-error" id="loginError">Credenciales invalidas. Revisa el rol, el correo y la contraseña.</div>
+
+          </form>
+
+          <section class="create-user-panel hidden" id="createUserPanel" aria-live="polite">
+              <div class="create-user-panel-header">
+                <div>
+                  <h3>Registro de usuario</h3>
+                  <p>El rol quedará fijo en Psicologia y el estado se guardará como Activo.</p>
+                </div>
+                <span class="inline-pill">Rol fijo: Psicologia</span>
+              </div>
+              <div class="create-user-form" id="createUserForm">
+                <div class="create-user-fields">
+                  <div class="field">
+                    <label for="createUserName">Nombre</label>
+                    <input id="createUserName" name="createUserName" type="text" maxlength="80" placeholder="Nombre completo" required />
+                  </div>
+                  <div class="field">
+                    <label for="createUserEmail">Email</label>
+                    <input id="createUserEmail" name="createUserEmail" type="email" maxlength="120" placeholder="nombre@contrate.com" required />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="createUserPassword">Contraseña</label>
+                  <input id="createUserPassword" name="createUserPassword" type="password" maxlength="120" placeholder="Crea una contraseña" required />
+                </div>
+                <div class="create-user-role-box">
+                  <span class="inline-pill">Estado: Activo</span>
+                  <span class="create-user-note">Los nuevos usuarios siempre se crean para psicología.</span>
+                </div>
+                <div class="create-user-actions">
+                  <button class="btn btn-primary" type="button" id="saveCreateUserBtn">Guardar usuario</button>
+                  <button class="btn btn-secondary" type="button" id="closeCreateUserBtn">Volver al login</button>
+                </div>
+                <div class="create-user-message" id="createUserMessage"></div>
+              </div>
+            </section>
+        </div>
+      </section>
+
+      <main id="dashboardView" class="dashboard-shell hidden">
+        <section id="psychologyDashboard" class="role-dashboard">
+          <section class="panel dashboard-header">
+            <div class="dashboard-title">
+              <div class="eyebrow" id="psychologyRoleBadge">Psicologia</div>
+              <h2>Dashboard de Psicologia</h2>
+              <p>Seguimiento de registros completados y captura de nuevas solicitudes.</p>
+            </div>
+            <div class="dashboard-meta">
+              <div class="pill" id="psychologyUserPill"></div>
+              <button class="btn btn-secondary" id="logoutBtnPsychology" type="button">Cerrar sesion</button>
+            </div>
+          </section>
+
+          <section class="content-grid psychology-stats-grid">
+            <div class="card">
+              <h3>Registros completados</h3>
+              <div class="hero-stats" id="psychologyStats"></div>
+            </div>
+          </section>
+
+          <section id="psychologyFormSection" class="psychology-form-section">
+            <section class="panel dashboard-header">
+              <div class="dashboard-title" style="margin-bottom: 20px;">
+                <h2 style="margin: 0 0 6px; font-size: 28px;">Nuevo registro</h2>
+                <p style="margin: 0; color: var(--muted);">Completa todos los campos obligatorios para enviar una vacante lista para marketing.</p>
+              </div>
+            </section>
+
+            <section class="form-card">
+              <form id="jobForm" class="form-grid" novalidate>
+              <div class="field full">
+                <input id="psicologo" name="psicologo" type="hidden" required />
+                <span class="field-error" id="psicologoError"></span>
+              </div>
+
+              <div class="field">
+                <label for="cargo">CARGO</label>
+                <input id="cargo" name="cargo" type="text" maxlength="80" placeholder="Ej: Analista de selección" required />
+                <span class="field-error" id="cargoError"></span>
+              </div>
+
+              <div class="field">
+                <label for="ciudad">CIUDAD</label>
+                <input id="ciudad" name="ciudad" type="text" maxlength="60" placeholder="Ej: Medellín" required />
+                <span class="field-error" id="ciudadError"></span>
+              </div>
+
+              <div class="field full">
+                <label for="funciones">FUNCIONES</label>
+                <textarea id="funciones" name="funciones" maxlength="1000" placeholder="Describe las funciones principales del cargo" required></textarea>
+                <span class="field-error" id="funcionesError"></span>
+              </div>
+
+              <div class="field full">
+                <label for="requisitos">REQUISITOS</label>
+                <textarea id="requisitos" name="requisitos" maxlength="1000" placeholder="Mínimos requeridos para el cargo" required></textarea>
+                <span class="field-error" id="requisitosError"></span>
+              </div>
+
+              <div class="field full">
+                <label for="habilidades">HABILIDADES (SI APLICA)</label>
+                <textarea id="habilidades" name="habilidades" maxlength="600" placeholder="Habilidades técnicas o blandas deseables"></textarea>
+                <span class="field-error" id="habilidadesError"></span>
+              </div>
+
+              <div class="field">
+                <label for="salario">SALARIO</label>
+                <input id="salario" name="salario" type="text" maxlength="120" placeholder="Ej: 1400000 + prestaciones + bonos" required />
+                <span class="field-error" id="salarioError"></span>
+              </div>
+
+              <div class="field">
+                <label for="contrato">CONTRATO</label>
+                <select id="contrato" name="contrato" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="Indefinido">Indefinido</option>
+                  <option value="Obra o labor">Obra o labor</option>
+                  <option value="Aprendizaje">Aprendizaje</option>
+                </select>
+                <span class="field-error" id="contratoError"></span>
+              </div>
+
+              <div class="field full">
+                <label for="beneficios">BENEFICIOS (SI APLICAN, COMO HOSPEDAJE ALIMENTACION, SEGUROS ETC)</label>
+                <textarea id="beneficios" name="beneficios" maxlength="700" placeholder="Beneficios adicionales, si aplica"></textarea>
+                <span class="field-error" id="beneficiosError"></span>
+              </div>
+
+              <div class="field full">
+                <label for="horarios">HORARIOS</label>
+                <textarea id="horarios" name="horarios" maxlength="400" placeholder="Horario laboral o turnos" required></textarea>
+                <span class="field-error" id="horariosError"></span>
+              </div>
+
+              <div class="field">
+                <label for="correo">A QUE CORREO ENVIAN CV</label>
+                <input id="correo" name="correo" type="email" maxlength="120" placeholder="ejemplo@contrate.com" required />
+                <span class="field-error" id="correoError"></span>
+              </div>
+
+              <div class="field">
+                <label for="wtpp">A QUE WTPP ENVIAN CV</label>
+                <input id="wtpp" name="wtpp" type="tel" maxlength="20" placeholder="Ej: +57 300 000 0000" required />
+                <span class="field-error" id="wtppError"></span>
+              </div>
+
+              <div class="field full">
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Guardar registro</button>
+                  <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
+                  <div class="toast" id="psychologyToast">Registro guardado y enviado a marketing en estado de proceso.</div>
+                </div>
+              </div>
+              </form>
+            </section>
+          </section>
+        </section>
+
+        <section id="psychologyRecordsSection" class="psychology-records-section hidden section-anchor">
+          <section class="panel dashboard-header">
+            <div class="dashboard-title">
+              <div class="eyebrow">Bienvenidos al registro</div>
+              <h2>Registros de Psicología</h2>
+              <p>Selecciona un registro en la galería para verlo y editarlo desde el panel izquierdo.</p>
+            </div>
+            <div class="dashboard-meta">
+              <div class="pill">Edición exclusiva para psicología</div>
+            </div>
+          </section>
+
+          <section class="psychology-records-workspace">
+            <div class="records-card">
+              <h3>Registro seleccionado</h3>
+              <div id="psychologyRecordEditor"></div>
+            </div>
+
+            <div class="records-card marketing-gallery-card">
+              <div class="records-toolbar">
+                <div>
+                  <h3 style="margin: 0 0 4px;">Galería de registros</h3>
+                  <div class="records-count" id="psychologyRecordsCount"></div>
+                </div>
+                <div class="toolbar-inline">
+                  <div class="date-filter-row">
+                    <label for="psychologySearchInput" style="margin: 0;">Buscar</label>
+                    <input id="psychologySearchInput" type="search" placeholder="Palabra clave" />
+                  </div>
+                  <div class="date-filter-row">
+                    <label for="psychologyDateFilter" style="margin: 0;">Fechas</label>
+                    <input id="psychologyDateFilter" type="date" />
+                  </div>
+                </div>
+              </div>
+              <div id="psychologyRecordsList" class="gallery-list"></div>
+              <div class="pagination">
+                <button class="btn btn-secondary btn-small" id="psychologyPrevPageBtn" type="button">Anterior</button>
+                <span class="page-info" id="psychologyPageInfo"></span>
+                <button class="btn btn-secondary btn-small" id="psychologyNextPageBtn" type="button">Siguiente</button>
+                <button class="btn btn-secondary btn-small" id="psychologyResetFilterBtn" type="button">Limpiar</button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="marketingDashboard" class="role-dashboard">
+          <section class="panel dashboard-header">
+            <div class="dashboard-title">
+              <div class="eyebrow" id="marketingRoleBadge">Marketing</div>
+              <h2>Dashboard de Marketing</h2>
+              <p>Registros ordenados alfabéticamente con control de estado y paginación.</p>
+            </div>
+            <div class="dashboard-meta">
+              <div class="pill" id="marketingUserPill"></div>
+              <button class="btn btn-secondary" id="logoutBtnMarketing" type="button">Cerrar sesion</button>
+            </div>
+          </section>
+
+          <section class="card">
+            <h3>Registros totales</h3>
+            <div class="stats-grid marketing-top-stats" id="marketingStats"></div>
+          </section>
+
+          <section id="marketingRecordsSection" class="content-grid marketing-records-section">
+            <div class="records-card">
+              <h3>Detalle del registro</h3>
+              <div id="detailViewer"></div>
+            </div>
+
+            <div class="records-card marketing-gallery-card">
+              <div class="records-toolbar">
+                <div>
+                  <h3 style="margin: 0 0 4px;">Galería de registros</h3>
+                  <div class="records-count" id="recordsCount"></div>
+                </div>
+                <div class="toolbar-inline">
+                  <select id="statusFilter" aria-label="Filtrar registros por estado">
+                    <option value="all">Todos</option>
+                    <option value="in_process">En proceso</option>
+                    <option value="completed">Completados</option>
+                  </select>
+                  <div class="pill" id="marketingSortInfo">Ordenados del más reciente al más viejo</div>
+                </div>
+              </div>
+              <div id="recordsList" class="gallery-list"></div>
+              <div class="pagination">
+                <button class="btn btn-secondary btn-small" id="prevPageBtn" type="button">Anterior</button>
+                <span class="page-info" id="pageInfo"></span>
+                <button class="btn btn-secondary btn-small" id="nextPageBtn" type="button">Siguiente</button>
+                <button class="btn btn-secondary btn-small" id="refreshRecordsBtn" type="button">Actualizar</button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const STORAGE_KEY = 'contrate_session_v1';
+      const RECORDS_KEY = 'contrate_records_v1';
+      const USERS_KEY = 'contrate_users_v1';
+      const PAGE_SIZE = 5;
+
+      const PROFILES = {
+        psicologia: {
+          roleLabel: 'Psicologia',
+          title: 'Dashboard de Psicologia',
+          subtitle: 'Gestion de pacientes, seguimiento emocional y organizacion de la agenda clinica.',
+          email: 'psicologia@contrate.com',
+          password: 'Contrate2026',
+          accentClass: 'psicologia'
+        },
+        marketing: {
+          roleLabel: 'Marketing',
+          title: 'Dashboard de Marketing',
+          subtitle: 'Seguimiento de campañas, leads, conversiones y oportunidades comerciales.',
+          email: 'marketing@contrate.com',
+          password: 'Contrate2026',
+          accentClass: 'marketing'
+        }
+      };
+
+      const LOCAL_DEMO_USERS = [
+        { email: PROFILES.psicologia.email, password: PROFILES.psicologia.password, role: 'psicologia', name: PROFILES.psicologia.roleLabel, active: true },
+        { email: PROFILES.marketing.email, password: PROFILES.marketing.password, role: 'marketing', name: PROFILES.marketing.roleLabel, active: true }
+      ];
+
+      const loginView = document.getElementById('loginView');
+      const dashboardView = document.getElementById('dashboardView');
+      const psychologyDashboard = document.getElementById('psychologyDashboard');
+      const marketingDashboard = document.getElementById('marketingDashboard');
+      const loginForm = document.getElementById('loginForm');
+      const loginError = document.getElementById('loginError');
+
+      const openCreateUserBtn = document.getElementById('openCreateUserBtn');
+      const closeCreateUserBtn = document.getElementById('closeCreateUserBtn');
+      const saveCreateUserBtn = document.getElementById('saveCreateUserBtn');
+      const createUserPanel = document.getElementById('createUserPanel');
+      const createUserForm = document.getElementById('createUserForm');
+      const createUserNameInput = document.getElementById('createUserName');
+      const createUserEmailInput = document.getElementById('createUserEmail');
+      const createUserPasswordInput = document.getElementById('createUserPassword');
+      const createUserMessage = document.getElementById('createUserMessage');
+      const logoutBtnPsychology = document.getElementById('logoutBtnPsychology');
+      const logoutBtnMarketing = document.getElementById('logoutBtnMarketing');
+      const navFormBtn = document.getElementById('navFormBtn');
+      const roleSelect = document.getElementById('role');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const sessionPill = document.getElementById('sessionPill');
+      const psychologyRoleBadge = document.getElementById('psychologyRoleBadge');
+      const marketingRoleBadge = document.getElementById('marketingRoleBadge');
+      const psychologyUserPill = document.getElementById('psychologyUserPill');
+      const marketingUserPill = document.getElementById('marketingUserPill');
+      const psychologyStats = document.getElementById('psychologyStats');
+      const marketingStats = document.getElementById('marketingStats');
+      const jobForm = document.getElementById('jobForm');
+      const psychologyToast = document.getElementById('psychologyToast');
+      const appNotification = document.getElementById('appNotification');
+      const recordsList = document.getElementById('recordsList');
+      const recordsCount = document.getElementById('recordsCount');
+      const pageInfo = document.getElementById('pageInfo');
+      const prevPageBtn = document.getElementById('prevPageBtn');
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      const refreshRecordsBtn = document.getElementById('refreshRecordsBtn');
+      const statusFilter = document.getElementById('statusFilter');
+      const detailViewer = document.getElementById('detailViewer');
+      const appTopbar = document.getElementById('appTopbar');
+      const navRecordsBtn = document.getElementById('navRecordsBtn');
+      const psicologoInput = document.getElementById('psicologo');
+      const psychologyRecordsSection = document.getElementById('psychologyRecordsSection');
+      const psychologyRecordEditor = document.getElementById('psychologyRecordEditor');
+      const psychologyRecordsList = document.getElementById('psychologyRecordsList');
+      const psychologyRecordsCount = document.getElementById('psychologyRecordsCount');
+      const psychologyPageInfo = document.getElementById('psychologyPageInfo');
+      const psychologyPrevPageBtn = document.getElementById('psychologyPrevPageBtn');
+      const psychologyNextPageBtn = document.getElementById('psychologyNextPageBtn');
+      const psychologySearchInput = document.getElementById('psychologySearchInput');
+      const psychologyDateFilter = document.getElementById('psychologyDateFilter');
+      const psychologyResetFilterBtn = document.getElementById('psychologyResetFilterBtn');
+      const psychologyFormSection = document.getElementById('psychologyFormSection');
+      const marketingRecordsSection = document.getElementById('marketingRecordsSection');
+
+      const formFields = ['psicologo', 'cargo', 'ciudad', 'funciones', 'requisitos', 'habilidades', 'salario', 'contrato', 'beneficios', 'horarios', 'correo', 'wtpp'];
+      const fieldErrors = {
+        psicologo: 'psicologoError',
+        cargo: 'cargoError',
+        ciudad: 'ciudadError',
+        funciones: 'funcionesError',
+        requisitos: 'requisitosError',
+        habilidades: 'habilidadesError',
+        salario: 'salarioError',
+        contrato: 'contratoError',
+        beneficios: 'beneficiosError',
+        horarios: 'horariosError',
+        correo: 'correoError',
+        wtpp: 'wtppError'
+      };
+
+      let currentMarketingPage = 1;
+      let currentMarketingFilter = 'all';
+      let selectedMarketingRecordId = null;
+      let currentPsychologyPage = 1;
+      let currentPsychologySearch = '';
+      let currentPsychologyDateFilter = '';
+      let selectedPsychologyRecordId = null;
+      let cachedUsers = [];
+      let lastScrollY = 0;
+      let isTopbarHidden = false;
+      let sectionObserver = null;
+      let notificationTimeoutId = null;
+
+      function getSessionDisplayName(session) {
+        if (session?.name && String(session.name).trim()) {
+          return String(session.name).trim();
+        }
+
+        if (session?.email) {
+          return String(session.email).split('@')[0];
+        }
+
+        return 'Usuario';
+      }
+
+      function setAssignedPsychologist(session) {
+        const displayName = getSessionDisplayName(session);
+        if (psicologoInput) {
+          psicologoInput.value = displayName;
+        }
+      }
+
+      function setNavActive(sectionKey) {
+        if (!navFormBtn || !navRecordsBtn) {
+          return;
+        }
+
+        navFormBtn.classList.toggle('active', sectionKey === 'form');
+        navRecordsBtn.classList.toggle('active', sectionKey === 'records');
+      }
+
+      function showNotification(message, type = 'info') {
+        if (!appNotification) {
+          return;
+        }
+
+        if (notificationTimeoutId) {
+          clearTimeout(notificationTimeoutId);
+        }
+
+        appNotification.textContent = message;
+        appNotification.className = `app-notification ${type} show`;
+
+        notificationTimeoutId = setTimeout(() => {
+          appNotification.className = 'app-notification';
+          appNotification.textContent = '';
+        }, 2600);
+      }
+
+      function saveSession(session) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+      }
+
+      function loadSession() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function clearSession() {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+
+      function loadRecords() {
+        try {
+          const raw = localStorage.getItem(RECORDS_KEY);
+          const records = raw ? JSON.parse(raw) : [];
+          return Array.isArray(records) ? records : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function loadUsers() {
+        try {
+          const raw = localStorage.getItem(USERS_KEY);
+          const users = raw ? JSON.parse(raw) : [];
+          return Array.isArray(users) ? users : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveUsers(users) {
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+      }
+
+      function persistUsers(users) {
+        saveUsers(users);
+        if (canUseAppsScriptBackend()) {
+          runBackendMethod('saveUsersToSheet', users).catch(() => {});
+        }
+      }
+
+      function saveRecords(records) {
+        localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+        if (canUseAppsScriptBackend()) {
+          runBackendMethod('saveRecordsToSheet', records).catch(() => {});
+        }
+      }
+
+      function canUseAppsScriptBackend() {
+        return typeof google !== 'undefined' && google.script && google.script.run;
+      }
+
+      function runBackendMethod(methodName, ...args) {
+        return new Promise((resolve, reject) => {
+          if (!canUseAppsScriptBackend()) {
+            reject(new Error('Apps Script backend is not available.'));
+            return;
+          }
+
+          google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)[methodName](...args);
+        });
+      }
+
+      function hydrateRecordsFromBackend() {
+        if (!canUseAppsScriptBackend()) {
+          return Promise.resolve(loadRecords());
+        }
+
+        return runBackendMethod('getRecordsFromSheet')
+          .then((records) => {
+            const safeRecords = Array.isArray(records) ? records : [];
+            localStorage.setItem(RECORDS_KEY, JSON.stringify(safeRecords));
+            return safeRecords;
+          })
+          .catch(() => loadRecords());
+      }
+
+      function normalizeUserRecord(user) {
+        return {
+          email: String(user?.email || '').trim().toLowerCase(),
+          password: String(user?.password || ''),
+          role: String(user?.role || '').trim().toLowerCase(),
+          name: String(user?.name || '').trim(),
+          active: user?.active
+        };
+      }
+
+      function isUserEnabled(user) {
+        const value = user?.active;
+        if (value === undefined || value === null || value === '') {
+          return true;
+        }
+
+        const normalized = String(value).trim().toLowerCase();
+        return !['false', '0', 'no', 'inactive', 'disabled'].includes(normalized);
+      }
+
+      function getFallbackUsers() {
+        return LOCAL_DEMO_USERS.slice();
+      }
+
+      function getAvailableUsers() {
+        const storedUsers = loadUsers();
+        return (storedUsers.length ? storedUsers : getFallbackUsers()).map(normalizeUserRecord);
+      }
+
+      function setCreateUserMessage(message, type) {
+        if (!createUserMessage) {
+          return;
+        }
+
+        if (!message) {
+          createUserMessage.textContent = '';
+          createUserMessage.className = 'create-user-message';
+          return;
+        }
+
+        createUserMessage.textContent = message;
+        createUserMessage.className = `create-user-message show ${type}`;
+      }
+
+      function openCreateUserPanel() {
+        if (!createUserPanel) {
+          return;
+        }
+
+        if (loginForm) {
+          loginForm.classList.add('hidden');
+        }
+
+        createUserPanel.classList.remove('hidden');
+        setCreateUserMessage('', '');
+        if (createUserNameInput) {
+          createUserNameInput.focus();
+        }
+      }
+
+      function closeCreateUserPanel() {
+        if (!createUserPanel) {
+          return;
+        }
+
+        if (createUserNameInput) {
+          createUserNameInput.value = '';
+        }
+
+        if (createUserEmailInput) {
+          createUserEmailInput.value = '';
+        }
+
+        if (createUserPasswordInput) {
+          createUserPasswordInput.value = '';
+        }
+
+        setCreateUserMessage('', '');
+        createUserPanel.classList.add('hidden');
+        if (loginForm) {
+          loginForm.classList.remove('hidden');
+        }
+      }
+
+      function isDuplicateUserEmail(email, users) {
+        const normalizedEmail = String(email || '').trim().toLowerCase();
+        return users.some((user) => normalizeUserRecord(user).email === normalizedEmail);
+      }
+
+      function createPsychologyUser(payload) {
+        const users = getAvailableUsers();
+        const name = String(payload.name || '').trim();
+        const email = String(payload.email || '').trim().toLowerCase();
+        const password = String(payload.password || '').trim();
+
+        if (!name) {
+          return { ok: false, message: 'Escribe el nombre del usuario.' };
+        }
+
+        if (!validateEmail(email)) {
+          return { ok: false, message: 'Escribe un email valido.' };
+        }
+
+        if (!password || password.length < 6) {
+          return { ok: false, message: 'La contraseña debe tener al menos 6 caracteres.' };
+        }
+
+        if (isDuplicateUserEmail(email, users)) {
+          return { ok: false, message: 'Ya existe un usuario con ese email.' };
+        }
+
+        const nextUsers = users.concat({
+          name,
+          email,
+          password,
+          role: 'psicologia',
+          active: 'TRUE'
+        });
+
+        persistUsers(nextUsers);
+        cachedUsers = nextUsers.map(normalizeUserRecord);
+        return { ok: true, message: 'Usuario creado correctamente.', createdUser: { name, email, password } };
+      }
+
+      function hydrateUsersFromBackend() {
+        if (!canUseAppsScriptBackend()) {
+          const fallbackUsers = getFallbackUsers();
+          saveUsers(fallbackUsers);
+          cachedUsers = fallbackUsers.map(normalizeUserRecord);
+          return Promise.resolve(cachedUsers);
+        }
+
+        return runBackendMethod('getUsersFromSheet')
+          .then((users) => {
+            const safeUsers = Array.isArray(users) && users.length ? users : getFallbackUsers();
+            saveUsers(safeUsers);
+            cachedUsers = safeUsers.map(normalizeUserRecord);
+            return cachedUsers;
+          })
+          .catch(() => {
+            const fallbackUsers = getFallbackUsers();
+            saveUsers(fallbackUsers);
+            cachedUsers = fallbackUsers.map(normalizeUserRecord);
+            return cachedUsers;
+          });
+      }
+
+      function getRecordStats() {
+        const records = loadRecords();
+        const total = records.length;
+        const completed = records.filter((record) => record.status === 'completed').length;
+        const inProcess = records.filter((record) => record.status === 'in_process').length;
+        return { total, completed, inProcess };
+      }
+
+      function getRecordTimestamp(record) {
+        const timestamp = new Date(record?.createdAt || 0).getTime();
+        return Number.isNaN(timestamp) ? 0 : timestamp;
+      }
+
+      function getFilteredRecords() {
+        const records = loadRecords().slice().sort((left, right) => getRecordTimestamp(right) - getRecordTimestamp(left));
+        if (currentMarketingFilter === 'all') {
+          return records;
+        }
+
+        return records.filter((record) => record.status === currentMarketingFilter);
+      }
+
+      function getRecordById(recordId) {
+        return loadRecords().find((record) => String(record.id) === String(recordId)) || null;
+      }
+
+      function toLocalDateInputValue(dateValue) {
+        const date = new Date(dateValue);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      function normalizeSearchValue(value) {
+        return String(value || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .trim();
+      }
+
+      function getPsychologyFilteredRecords() {
+        const records = loadRecords().slice().sort((left, right) => getRecordTimestamp(right) - getRecordTimestamp(left));
+        const searchValue = normalizeSearchValue(currentPsychologySearch);
+
+        return records.filter((record) => {
+          const matchesDate = !currentPsychologyDateFilter || toLocalDateInputValue(record.createdAt) === currentPsychologyDateFilter;
+          if (!matchesDate) {
+            return false;
+          }
+
+          if (!searchValue) {
+            return true;
+          }
+
+          const searchableText = normalizeSearchValue([
+            record.psicologo,
+            record.cargo,
+            record.ciudad,
+            record.funciones,
+            record.requisitos,
+            record.habilidades,
+            record.salario,
+            record.contrato,
+            record.beneficios,
+            record.horarios,
+            record.correo,
+            record.wtpp,
+            record.status
+          ].join(' '));
+
+          return searchableText.includes(searchValue);
+        });
+      }
+
+      function setFieldError(fieldName, message) {
+        const errorElement = document.getElementById(fieldErrors[fieldName]);
+        if (!errorElement) {
+          return;
+        }
+
+        errorElement.textContent = message || '';
+        errorElement.classList.toggle('show', Boolean(message));
+      }
+
+      function clearFieldErrors() {
+        formFields.forEach((fieldName) => setFieldError(fieldName, ''));
+      }
+
+      function validateEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+      }
+
+      function validatePhone(value) {
+        const digits = value.replace(/\D/g, '');
+        return digits.length >= 7 && digits.length <= 15;
+      }
+
+      function stripEmojis(value) {
+        return String(value || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{2300}-\u{23FF}\u{2B00}-\u{2BFF}]/gu, '');
+      }
+
+      function normalizeRecordValue(value) {
+        return stripEmojis(value).trim();
+      }
+
+      function hasEmoji(value) {
+        return /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F1E6}-\u{1F1FF}\u{2300}-\u{23FF}\u{2B00}-\u{2BFF}]/u.test(String(value || ''));
+      }
+
+      function validateRequiredText(value, minLength, message) {
+        if (!value || value.trim().length < minLength) {
+          return message;
+        }
+        return '';
+      }
+
+      function validateRequiredWordLimit(value, maxWords, requiredMessage, limitMessage) {
+        const trimmedValue = String(value || '').trim();
+        if (!trimmedValue) {
+          return requiredMessage;
+        }
+
+        const wordCount = trimmedValue.split(/\s+/).filter(Boolean).length;
+        if (wordCount > maxWords) {
+          return limitMessage;
+        }
+
+        return '';
+      }
+
+      function validatePsychologyRecordValues(values) {
+        const normalizedValues = {
+          psicologo: normalizeRecordValue(values.psicologo),
+          cargo: normalizeRecordValue(values.cargo),
+          ciudad: normalizeRecordValue(values.ciudad),
+          funciones: normalizeRecordValue(values.funciones),
+          requisitos: normalizeRecordValue(values.requisitos),
+          habilidades: normalizeRecordValue(values.habilidades),
+          salario: normalizeRecordValue(values.salario),
+          contrato: normalizeRecordValue(values.contrato),
+          beneficios: normalizeRecordValue(values.beneficios),
+          horarios: normalizeRecordValue(values.horarios),
+          correo: normalizeRecordValue(values.correo),
+          wtpp: normalizeRecordValue(values.wtpp)
+        };
+
+        const emojiFieldMessages = {
+          psicologo: 'El psicólogo no puede contener emojis.',
+          cargo: 'El cargo no puede contener emojis.',
+          ciudad: 'La ciudad no puede contener emojis.',
+          funciones: 'Las funciones no pueden contener emojis.',
+          requisitos: 'Los requisitos no pueden contener emojis.',
+          habilidades: 'Las habilidades no pueden contener emojis.',
+          salario: 'El salario no puede contener emojis.',
+          contrato: 'El contrato no puede contener emojis.',
+          beneficios: 'Los beneficios no pueden contener emojis.',
+          horarios: 'Los horarios no pueden contener emojis.',
+          correo: 'El correo no puede contener emojis.',
+          wtpp: 'El WhatsApp no puede contener emojis.'
+        };
+
+        const errors = {
+          psicologo: normalizedValues.psicologo ? '' : 'El psicólogo es obligatorio.',
+          cargo: normalizedValues.cargo ? '' : 'El cargo es obligatorio.',
+          ciudad: normalizedValues.ciudad ? '' : 'La ciudad es obligatoria.',
+          funciones: normalizedValues.funciones ? '' : 'Las funciones son obligatorias.',
+          requisitos: normalizedValues.requisitos ? '' : 'Los requisitos son obligatorios.',
+          habilidades: '',
+          salario: normalizedValues.salario ? '' : 'El salario es obligatorio.',
+          contrato: normalizedValues.contrato ? '' : 'Selecciona el tipo de contrato.',
+          beneficios: validateRequiredWordLimit(normalizedValues.beneficios, 20, 'Los beneficios son obligatorios.', 'Los beneficios deben tener como máximo 20 palabras.'),
+          horarios: normalizedValues.horarios ? '' : 'Los horarios son obligatorios.',
+          correo: validateEmail(normalizedValues.correo) ? '' : 'Ingresa un correo valido para recibir los CV.',
+          wtpp: validatePhone(normalizedValues.wtpp) ? '' : 'Ingresa un numero de WhatsApp valido con entre 7 y 15 digitos.'
+        };
+
+        Object.keys(normalizedValues).forEach((fieldName) => {
+          if (hasEmoji(normalizedValues[fieldName])) {
+            errors[fieldName] = emojiFieldMessages[fieldName] || 'Este campo no puede contener emojis.';
+          }
+        });
+
+        const isValid = Object.entries(errors).every(([fieldName, message]) => fieldName === 'habilidades' || !message);
+        return { isValid, values: normalizedValues, errors };
+      }
+
+      function attachEmojiSanitizer(fieldElement) {
+        if (!fieldElement || fieldElement.dataset.emojiSanitized === 'true') {
+          return;
+        }
+
+        const sanitizeFieldValue = () => {
+          const nextValue = stripEmojis(fieldElement.value);
+          if (nextValue !== fieldElement.value) {
+            fieldElement.value = nextValue;
+          }
+        };
+
+        fieldElement.addEventListener('input', sanitizeFieldValue);
+        fieldElement.addEventListener('paste', (event) => {
+          const clipboardText = event.clipboardData?.getData('text') || '';
+          if (!clipboardText) {
+            return;
+          }
+
+          event.preventDefault();
+          const sanitizedText = stripEmojis(clipboardText);
+
+          if (typeof fieldElement.setRangeText === 'function' && typeof fieldElement.selectionStart === 'number' && typeof fieldElement.selectionEnd === 'number') {
+            const start = fieldElement.selectionStart;
+            const end = fieldElement.selectionEnd;
+            fieldElement.setRangeText(sanitizedText, start, end, 'end');
+            fieldElement.dispatchEvent(new Event('input', { bubbles: true }));
+            return;
+          }
+
+          fieldElement.value = `${fieldElement.value || ''}${sanitizedText}`;
+          fieldElement.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+
+        fieldElement.dataset.emojiSanitized = 'true';
+      }
+
+      function validateJobForm() {
+        const values = Object.fromEntries(new FormData(jobForm).entries());
+        const psychologistName = values.psicologo === 'other' ? values.psicologoOtro : values.psicologo;
+        const validation = validatePsychologyRecordValues({
+          psicologo: psychologistName,
+          cargo: values.cargo,
+          ciudad: values.ciudad,
+          funciones: values.funciones,
+          requisitos: values.requisitos,
+          habilidades: values.habilidades,
+          salario: values.salario,
+          contrato: values.contrato,
+          beneficios: values.beneficios,
+          horarios: values.horarios,
+          correo: values.correo,
+          wtpp: values.wtpp
+        });
+
+        Object.entries(validation.errors).forEach(([fieldName, message]) => {
+          setFieldError(fieldName, message);
+        });
+
+        return validation;
+      }
+
+      function renderPsychologyDashboard(session) {
+        const stats = getRecordStats();
+        sessionPill.textContent = 'Sesion activa: Psicologia';
+        appTopbar.classList.remove('hidden');
+        psychologyRoleBadge.textContent = 'Psicologia';
+        psychologyUserPill.textContent = `${session.email} · Psicologia`;
+        setAssignedPsychologist(session);
+        psychologyStats.innerHTML = `
+          <div class="stat-card">
+            <div class="value">${stats.completed}</div>
+            <div class="label">Registros completados</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">${stats.inProcess}</div>
+            <div class="label">Registros en proceso</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">${stats.total}</div>
+            <div class="label">Registros totales</div>
+          </div>
+        `;
+        psychologyDashboard.classList.add('active');
+        marketingDashboard.classList.remove('active');
+        dashboardView.classList.remove('hidden');
+        loginView.classList.add('hidden');
+        dashboardView.setAttribute('data-psychology-view', 'form');
+        showPsychologyPage('form');
+      }
+
+      function renderMarketingDashboard(session) {
+        const stats = getRecordStats();
+        sessionPill.textContent = 'Sesion activa: Marketing';
+        appTopbar.classList.add('hidden');
+        marketingRoleBadge.textContent = 'Marketing';
+        marketingUserPill.textContent = `${session.email} · Marketing`;
+        statusFilter.value = currentMarketingFilter;
+        marketingStats.innerHTML = `
+          <div class="stat-card">
+            <div class="value">${stats.total}</div>
+            <div class="label">Registros totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">${stats.inProcess}</div>
+            <div class="label">En proceso</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">${stats.completed}</div>
+            <div class="label">Completados</div>
+          </div>
+        `;
+        psychologyDashboard.classList.remove('active');
+        marketingDashboard.classList.add('active');
+        dashboardView.classList.remove('hidden');
+        loginView.classList.add('hidden');
+        dashboardView.removeAttribute('data-psychology-view');
+        psychologyFormSection.classList.add('hidden');
+        psychologyRecordsSection.classList.add('hidden');
+        if (!selectedMarketingRecordId) {
+          const firstRecord = getFilteredRecords()[0];
+          selectedMarketingRecordId = firstRecord ? firstRecord.id : null;
+        }
+        renderMarketingDetail();
+        renderMarketingRecords();
+        if (marketingRecordsSection) {
+          marketingRecordsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        setNavActive('records');
+      }
+
+      function showLogin() {
+        loginView.classList.remove('hidden');
+        dashboardView.classList.add('hidden');
+        dashboardView.removeAttribute('data-psychology-view');
+        appTopbar.classList.add('hidden');
+        psychologyDashboard.classList.remove('active');
+        marketingDashboard.classList.remove('active');
+        sessionPill.textContent = 'Portal corporativo seguro';
+        setNavActive('form');
+        if (sectionObserver) {
+          sectionObserver.disconnect();
+          sectionObserver = null;
+        }
+        psychologyFormSection.classList.add('hidden');
+        psychologyRecordsSection.classList.add('hidden');
+        if (psicologoInput) {
+          psicologoInput.value = '';
+        }
+      }
+
+      function attemptLogin(role, email, password, users = getAvailableUsers()) {
+        const normalizedRole = String(role || '').trim().toLowerCase();
+        const normalizedEmail = String(email || '').trim().toLowerCase();
+        const normalizedPassword = String(password || '');
+        const user = users.find((item) => {
+          const normalizedUser = normalizeUserRecord(item);
+          return normalizedUser.role === normalizedRole
+            && normalizedUser.email === normalizedEmail
+            && normalizedUser.password === normalizedPassword
+            && isUserEnabled(normalizedUser);
+        });
+
+        if (!user) {
+          return null;
+        }
+
+        const normalizedUser = normalizeUserRecord(user);
+        const profile = PROFILES[normalizedUser.role] || { roleLabel: normalizedUser.role };
+        const session = {
+          role: normalizedUser.role,
+          email: normalizedUser.email,
+          name: normalizedUser.name || profile.roleLabel
+        };
+        saveSession(session);
+
+        return session;
+      }
+
+      function updateTopbarVisibility() {
+        const currentScrollY = window.scrollY || 0;
+        const shouldHide = currentScrollY > 80 && currentScrollY < lastScrollY;
+        isTopbarHidden = shouldHide;
+        appTopbar.classList.toggle('is-hidden', shouldHide);
+        lastScrollY = currentScrollY;
+      }
+
+      function showPsychologyPage(viewKey) {
+        const showForm = viewKey === 'form';
+        const showRecords = viewKey === 'records';
+
+        dashboardView.setAttribute('data-psychology-view', viewKey);
+        psychologyFormSection.classList.toggle('hidden', !showForm);
+        psychologyRecordsSection.classList.toggle('hidden', !showRecords);
+
+        setNavActive(viewKey);
+      }
+
+      function ensurePsychologySectionVisible() {
+        showPsychologyPage('records');
+        observePsychologySections();
+      }
+
+      function observePsychologySections() {
+        if (sectionObserver) {
+          sectionObserver.disconnect();
+        }
+
+        sectionObserver = new IntersectionObserver(
+          (entries) => {
+            const visibleEntry = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((left, right) => right.intersectionRatio - left.intersectionRatio)[0];
+
+            if (!visibleEntry) {
+              return;
+            }
+
+            if (visibleEntry.target.id === 'psychologyFormSection') {
+              setNavActive('form');
+            }
+
+            if (visibleEntry.target.id === 'psychologyRecordsSection') {
+              setNavActive('records');
+            }
+          },
+          { root: null, threshold: [0.2, 0.45, 0.7], rootMargin: '-20% 0px -20% 0px' }
+        );
+
+        sectionObserver.observe(psychologyFormSection);
+        sectionObserver.observe(psychologyRecordsSection);
+      }
+
+      function renderPsychologyRecordEditor() {
+        const records = getPsychologyFilteredRecords();
+        const record = selectedPsychologyRecordId ? getRecordById(selectedPsychologyRecordId) : records[0] || null;
+
+        if (!record) {
+          psychologyRecordEditor.innerHTML = '<div class="detail-empty">No hay registros para editar con este filtro.</div>';
+          psychologyRecordsCount.textContent = '0 registros encontrados';
+          psychologyPageInfo.textContent = 'Página 1 de 1';
+          psychologyPrevPageBtn.disabled = true;
+          psychologyNextPageBtn.disabled = true;
+          psychologyRecordsList.innerHTML = '<div class="empty-state">No hay registros creados todavía.</div>';
+          return;
+        }
+
+        selectedPsychologyRecordId = record.id;
+        psychologyRecordEditor.innerHTML = `
+          <form id="psychologyEditForm" class="records-editor-form" novalidate>
+            <div class="field full">
+              <label for="editPsicologo">PSICOLOGO</label>
+              <input id="editPsicologo" name="editPsicologo" type="text" value="${record.psicologo || ''}" readonly />
+              <span class="field-error" id="editPsicologoNote">Este valor se asigna automáticamente por la sesión.</span>
+            </div>
+            <div class="field">
+              <label for="editCargo">CARGO</label>
+              <input id="editCargo" name="editCargo" type="text" maxlength="80" value="${record.cargo || ''}" required />
+            </div>
+            <div class="field">
+              <label for="editCiudad">CIUDAD</label>
+              <input id="editCiudad" name="editCiudad" type="text" maxlength="60" value="${record.ciudad || ''}" required />
+            </div>
+            <div class="field full">
+              <label for="editFunciones">FUNCIONES</label>
+              <textarea id="editFunciones" name="editFunciones" maxlength="1000" required>${record.funciones || ''}</textarea>
+            </div>
+            <div class="field full">
+              <label for="editRequisitos">REQUISITOS</label>
+              <textarea id="editRequisitos" name="editRequisitos" maxlength="1000" required>${record.requisitos || ''}</textarea>
+            </div>
+            <div class="field full">
+              <label for="editHabilidades">HABILIDADES (SI APLICA)</label>
+              <textarea id="editHabilidades" name="editHabilidades" maxlength="600">${record.habilidades || ''}</textarea>
+            </div>
+            <div class="field">
+              <label for="editSalario">SALARIO</label>
+              <input id="editSalario" name="editSalario" type="text" value="${record.salario || ''}" required />
+            </div>
+            <div class="field">
+              <label for="editContrato">CONTRATO</label>
+              <select id="editContrato" name="editContrato" required>
+                <option value="Indefinido" ${record.contrato === 'Indefinido' ? 'selected' : ''}>Indefinido</option>
+                <option value="Obra o labor" ${record.contrato === 'Obra o labor' ? 'selected' : ''}>Obra o labor</option>
+                <option value="Aprendizaje" ${record.contrato === 'Aprendizaje' ? 'selected' : ''}>Aprendizaje</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="editBeneficios">BENEFICIOS</label>
+              <textarea id="editBeneficios" name="editBeneficios" maxlength="700">${record.beneficios || ''}</textarea>
+            </div>
+            <div class="field full">
+              <label for="editHorarios">HORARIOS</label>
+              <textarea id="editHorarios" name="editHorarios" maxlength="400" required>${record.horarios || ''}</textarea>
+            </div>
+            <div class="field">
+              <label for="editCorreo">A QUE CORREO ENVIAN CV</label>
+              <input id="editCorreo" name="editCorreo" type="email" maxlength="120" value="${record.correo || ''}" required />
+            </div>
+            <div class="field">
+              <label for="editWtpp">A QUE WTPP ENVIAN CV</label>
+              <input id="editWtpp" name="editWtpp" type="tel" maxlength="20" value="${record.wtpp || ''}" required />
+            </div>
+            <div class="field full">
+              <label>ESTADO ACTUAL</label>
+              <input type="text" value="${record.status === 'completed' ? 'Completado' : 'En proceso'}" readonly />
+            </div>
+            <div class="editor-actions">
+              <button class="btn btn-primary" type="submit">Guardar cambios</button>
+              <button class="btn btn-secondary" type="button" id="psychologyRefreshBtn">Actualizar vista</button>
+            </div>
+            <div class="editor-meta">Creado: ${new Date(record.createdAt).toLocaleString('es-CO')}</div>
+          </form>
+        `;
+
+        const psychologyEditForm = document.getElementById('psychologyEditForm');
+        const psychologyRefreshBtn = document.getElementById('psychologyRefreshBtn');
+
+        psychologyEditForm.querySelectorAll('input, textarea').forEach((fieldElement) => {
+          if (fieldElement.type === 'hidden') {
+            return;
+          }
+
+          attachEmojiSanitizer(fieldElement);
+        });
+
+        psychologyRefreshBtn.addEventListener('click', () => renderPsychologyRecordsSection());
+
+        psychologyEditForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const formData = new FormData(psychologyEditForm);
+          const validation = validatePsychologyRecordValues({
+            psicologo: formData.get('editPsicologo'),
+            cargo: formData.get('editCargo'),
+            ciudad: formData.get('editCiudad'),
+            funciones: formData.get('editFunciones'),
+            requisitos: formData.get('editRequisitos'),
+            habilidades: formData.get('editHabilidades'),
+            salario: formData.get('editSalario'),
+            contrato: formData.get('editContrato'),
+            beneficios: formData.get('editBeneficios'),
+            horarios: formData.get('editHorarios'),
+            correo: formData.get('editCorreo'),
+            wtpp: formData.get('editWtpp')
+          });
+
+          if (!validation.isValid) {
+            const firstError = Object.values(validation.errors).find((message) => Boolean(message));
+            showNotification(firstError || 'Revisa los campos obligatorios.', 'error');
+            return;
+          }
+
+          const records = loadRecords();
+          const index = records.findIndex((item) => String(item.id) === String(record.id));
+          if (index === -1) {
+            return;
+          }
+
+          records[index] = {
+            ...records[index],
+            psicologo: validation.values.psicologo,
+            cargo: validation.values.cargo,
+            ciudad: validation.values.ciudad,
+            funciones: validation.values.funciones,
+            requisitos: validation.values.requisitos,
+            habilidades: validation.values.habilidades,
+            salario: validation.values.salario,
+            contrato: validation.values.contrato,
+            beneficios: validation.values.beneficios,
+            horarios: validation.values.horarios,
+            correo: validation.values.correo,
+            wtpp: validation.values.wtpp,
+            status: records[index].status
+          };
+
+          saveRecords(records);
+          showNotification('Registro actualizado correctamente.', 'success');
+          renderPsychologyRecordsSection();
+        });
+      }
+
+      function renderPsychologyRecordsSection() {
+        const records = getPsychologyFilteredRecords();
+        const totalPages = Math.max(1, Math.ceil(records.length / PAGE_SIZE));
+
+        if (currentPsychologyPage > totalPages) {
+          currentPsychologyPage = totalPages;
+        }
+
+        if (currentPsychologyPage < 1) {
+          currentPsychologyPage = 1;
+        }
+
+        const startIndex = (currentPsychologyPage - 1) * PAGE_SIZE;
+        const pageRecords = records.slice(startIndex, startIndex + PAGE_SIZE);
+
+        const psychologyCountLabel = currentPsychologySearch
+          ? 'coinciden con la búsqueda'
+          : currentPsychologyDateFilter
+            ? 'para la fecha filtrada'
+            : 'en total';
+
+        psychologyRecordsCount.textContent = `${records.length} registros ${psychologyCountLabel}`;
+        psychologyPageInfo.textContent = `Página ${currentPsychologyPage} de ${totalPages}`;
+        psychologyPrevPageBtn.disabled = currentPsychologyPage === 1;
+        psychologyNextPageBtn.disabled = currentPsychologyPage === totalPages;
+
+        if (!records.length) {
+          selectedPsychologyRecordId = null;
+          psychologyRecordEditor.innerHTML = currentPsychologySearch || currentPsychologyDateFilter
+            ? '<div class="detail-empty">No hay registros que coincidan con el filtro aplicado.</div>'
+            : '<div class="detail-empty">No hay registros para editar con este filtro.</div>';
+          psychologyRecordsList.innerHTML = currentPsychologySearch || currentPsychologyDateFilter
+            ? '<div class="empty-state">No hay coincidencias para la búsqueda o la fecha seleccionada.</div>'
+            : '<div class="empty-state">No hay registros creados todavía.</div>';
+          return;
+        }
+
+        if (!records.some((record) => String(record.id) === String(selectedPsychologyRecordId))) {
+          selectedPsychologyRecordId = records[0].id;
+        }
+
+        renderPsychologyRecordEditor();
+
+        psychologyRecordsList.innerHTML = pageRecords
+          .map(
+            (record) => `
+              <article class="gallery-card ${String(record.id) === String(selectedPsychologyRecordId) ? 'active' : ''}">
+                <div class="status-row">
+                  <div>
+                    <h4>${record.cargo}</h4>
+                    <p>${record.psicologo || 'Sin psicólogo'} · ${record.ciudad}</p>
+                  </div>
+                  <div class="status-pill ${record.status === 'completed' ? 'completed' : 'in-process'}">
+                    ${record.status === 'completed' ? 'Completado' : 'En proceso'}
+                  </div>
+                </div>
+                <div class="gallery-meta">
+                  <span><strong>Fecha:</strong> ${toLocalDateInputValue(record.createdAt)}</span>
+                  <span><strong>Correo:</strong> ${record.correo}</span>
+                  <span><strong>WhatsApp:</strong> ${record.wtpp}</span>
+                </div>
+                <div class="record-actions">
+                  <button class="btn btn-small btn-secondary" data-action="view-psychology" data-id="${record.id}" type="button">Ver</button>
+                </div>
+              </article>
+            `
+          )
+          .join('');
+      }
+
+      function formatDetailBox(label, value) {
+        return `
+          <div class="detail-box">
+            <strong>${label}</strong>
+            <span>${value || 'No aplica'}</span>
+          </div>
+        `;
+      }
+
+      function renderMarketingDetail() {
+        const record = selectedMarketingRecordId ? getRecordById(selectedMarketingRecordId) : null;
+
+        if (!record) {
+          detailViewer.innerHTML = '<div class="detail-empty">Selecciona un registro con el botón Ver para revisar toda su información aquí.</div>';
+          return;
+        }
+
+        detailViewer.innerHTML = `
+          <div class="record-card" style="margin-bottom: 0;">
+            <div class="record-head">
+              <div>
+                <h4>${record.cargo}</h4>
+                <p>${record.ciudad} · ${record.contrato}</p>
+              </div>
+              <div class="status-pill ${record.status === 'completed' ? 'completed' : 'in-process'}">
+                ${record.status === 'completed' ? 'Completado' : 'En proceso'}
+              </div>
+            </div>
+            <div class="detail-grid">
+              ${formatDetailBox('Psicólogo', record.psicologo)}
+              ${formatDetailBox('Cargo', record.cargo)}
+              ${formatDetailBox('Ciudad', record.ciudad)}
+              ${formatDetailBox('Funciones', record.funciones)}
+              ${formatDetailBox('Requisitos', record.requisitos)}
+              ${formatDetailBox('Habilidades', record.habilidades)}
+              ${formatDetailBox('Salario', record.salario)}
+              ${formatDetailBox('Contrato', record.contrato)}
+              ${formatDetailBox('Beneficios', record.beneficios)}
+              ${formatDetailBox('Horarios', record.horarios)}
+              ${formatDetailBox('Correo CV', record.correo)}
+              ${formatDetailBox('WTPP CV', record.wtpp)}
+              ${formatDetailBox('Estado', record.status === 'completed' ? 'Completado' : 'En proceso')}
+            </div>
+            <div class="record-actions marketing-copy-actions" style="margin-top: 4px;">
+              <button class="btn btn-small btn-copy-record" id="copyRecordWithWtsBtn" type="button">COPIAR CON WTS</button>
+              <button class="btn btn-small btn-secondary" id="copyRecordWithoutWtsBtn" type="button">COPIAR SIN WTS</button>
+            </div>
+            <div class="marketing-export-box">
+              <p class="marketing-export-title">Descargar Excel</p>
+              <div class="marketing-export-row">
+                <div class="field">
+                  <label for="marketingExportFrom">DESDE</label>
+                  <input id="marketingExportFrom" type="date" />
+                </div>
+                <div class="field">
+                  <label for="marketingExportTo">HASTA</label>
+                  <input id="marketingExportTo" type="date" />
+                </div>
+              </div>
+              <div class="marketing-export-actions">
+                <button class="btn btn-primary" id="downloadMarketingExcelBtn" type="button">DESCARGAR EXCEL</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const copyRecordWithWtsBtn = document.getElementById('copyRecordWithWtsBtn');
+        const copyRecordWithoutWtsBtn = document.getElementById('copyRecordWithoutWtsBtn');
+        const marketingExportFrom = document.getElementById('marketingExportFrom');
+        const marketingExportTo = document.getElementById('marketingExportTo');
+        const downloadMarketingExcelBtn = document.getElementById('downloadMarketingExcelBtn');
+
+        const buildMarketingCopyText = (includeWts) => {
+          const lines = [
+            `Cargo: ${record.cargo}`,
+            `Ciudad: ${record.ciudad}`,
+            `Funciones: ${record.funciones}`,
+            `Requisitos: ${record.requisitos}`,
+            `Salario: ${record.salario}`,
+            `Contrato: ${record.contrato}`,
+            `Beneficios: ${record.beneficios || 'No aplica'}`,
+            `Horarios: ${record.horarios}`,
+            `Correo CV: ${record.correo}`
+          ];
+
+          if (String(record.habilidades || '').trim()) {
+            lines.splice(4, 0, `Habilidades: ${record.habilidades}`);
+          }
+
+          if (includeWts) {
+            lines.push(`WTPP CV: ${record.wtpp}`);
+          }
+
+          return lines.join('\n');
+        };
+
+        const handleMarketingCopy = async (button, includeWts) => {
+          const originalLabel = button.textContent;
+          try {
+            await navigator.clipboard.writeText(buildMarketingCopyText(includeWts));
+            button.textContent = 'COPIADO';
+          } catch (error) {
+            button.textContent = 'ERROR';
+          }
+
+          setTimeout(() => {
+            button.textContent = originalLabel;
+          }, 1600);
+        };
+
+        if (copyRecordWithWtsBtn) {
+          copyRecordWithWtsBtn.addEventListener('click', () => handleMarketingCopy(copyRecordWithWtsBtn, true));
+        }
+
+        if (copyRecordWithoutWtsBtn) {
+          copyRecordWithoutWtsBtn.addEventListener('click', () => handleMarketingCopy(copyRecordWithoutWtsBtn, false));
+        }
+
+        if (downloadMarketingExcelBtn) {
+          downloadMarketingExcelBtn.addEventListener('click', () => {
+            downloadMarketingExcel(marketingExportFrom?.value || '', marketingExportTo?.value || '');
+          });
+        }
+      }
+
+      function buildMarketingExportRecords(fromDate, toDate) {
+        const records = getFilteredRecords().slice();
+        const fromValue = fromDate ? new Date(`${fromDate}T00:00:00`) : null;
+        const toValue = toDate ? new Date(`${toDate}T23:59:59.999`) : null;
+
+        return records.filter((record) => {
+          const createdAt = new Date(record.createdAt);
+          if (Number.isNaN(createdAt.getTime())) {
+            return false;
+          }
+
+          if (fromValue && createdAt < fromValue) {
+            return false;
+          }
+
+          if (toValue && createdAt > toValue) {
+            return false;
+          }
+
+          return true;
+        });
+      }
+
+      function downloadMarketingExcel(fromDate, toDate) {
+        if (fromDate && toDate && fromDate > toDate) {
+          showNotification('La fecha inicial no puede ser mayor que la final.', 'error');
+          return;
+        }
+
+        const records = buildMarketingExportRecords(fromDate, toDate);
+        if (!records.length) {
+          showNotification('No hay registros para exportar en ese rango.', 'error');
+          return;
+        }
+
+        const headers = ['Cargo', 'Ciudad', 'Funciones', 'Requisitos', 'Habilidades', 'Salario', 'Contrato', 'Beneficios', 'Horarios', 'Correo', 'WhatsApp', 'Estado', 'Fecha'];
+        const rows = records.map((record) => [
+          record.cargo || '',
+          record.ciudad || '',
+          record.funciones || '',
+          record.requisitos || '',
+          record.habilidades || '',
+          record.salario || '',
+          record.contrato || '',
+          record.beneficios || '',
+          record.horarios || '',
+          record.correo || '',
+          record.wtpp || '',
+          record.status === 'completed' ? 'Completado' : 'En proceso',
+          record.createdAt ? toLocalDateInputValue(record.createdAt) : ''
+        ]);
+
+        const escapeCell = (value) => String(value ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+        const htmlRows = [headers, ...rows]
+          .map((row) => `<tr>${row.map((cell) => `<td>${escapeCell(cell)}</td>`).join('')}</tr>`)
+          .join('');
+
+        const table = `
+          <html>
+            <head>
+              <meta charset="utf-8" />
+            </head>
+            <body>
+              <table border="1">
+                ${htmlRows}
+              </table>
+            </body>
+          </html>
+        `;
+
+        const blob = new Blob([table], { type: 'application/vnd.ms-excel;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const safeFrom = fromDate || 'inicio';
+        const safeTo = toDate || 'fin';
+
+        link.href = url;
+        link.download = `CONTRATE_Registros_${safeFrom}_${safeTo}.xls`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        showNotification(`Excel descargado con ${records.length} registro(s).`, 'success');
+      }
+
+      function renderMarketingRecords() {
+        const records = getFilteredRecords();
+        const totalPages = Math.max(1, Math.ceil(records.length / PAGE_SIZE));
+
+        if (currentMarketingPage > totalPages) {
+          currentMarketingPage = totalPages;
+        }
+
+        if (currentMarketingPage < 1) {
+          currentMarketingPage = 1;
+        }
+
+        const startIndex = (currentMarketingPage - 1) * PAGE_SIZE;
+        const pageRecords = records.slice(startIndex, startIndex + PAGE_SIZE);
+
+        recordsCount.textContent = `${records.length} registros ${currentMarketingFilter === 'all' ? 'ordenados del más reciente al más viejo' : 'filtrados por estado'}`;
+        pageInfo.textContent = `Página ${currentMarketingPage} de ${totalPages}`;
+        prevPageBtn.disabled = currentMarketingPage === 1;
+        nextPageBtn.disabled = currentMarketingPage === totalPages;
+
+        if (!records.length) {
+          recordsList.innerHTML = '<div class="empty-state">No hay registros creados todavía.</div>';
+          detailViewer.innerHTML = '<div class="detail-empty">No hay registros para mostrar en detalle.</div>';
+          return;
+        }
+
+        if (!records.some((record) => String(record.id) === String(selectedMarketingRecordId))) {
+          selectedMarketingRecordId = records[0].id;
+          renderMarketingDetail();
+        }
+
+        recordsList.innerHTML = pageRecords
+          .map(
+            (record) => `
+              <article class="gallery-card ${String(record.id) === String(selectedMarketingRecordId) ? 'active' : ''}">
+                <div class="status-row">
+                  <div>
+                    <h4>${record.cargo}</h4>
+                    <p>${record.ciudad}</p>
+                  </div>
+                  <div class="status-pill ${record.status === 'completed' ? 'completed' : 'in-process'}">
+                    ${record.status === 'completed' ? 'Completado' : 'En proceso'}
+                  </div>
+                </div>
+                <div class="gallery-meta">
+                  <span><strong>Correo:</strong> ${record.correo}</span>
+                  <span><strong>WhatsApp:</strong> ${record.wtpp}</span>
+                </div>
+                <div class="record-actions">
+                  <button class="btn btn-small btn-secondary" data-action="view" data-id="${record.id}" type="button">Ver</button>
+                  <button class="btn btn-small btn-complete" data-action="complete" data-id="${record.id}" type="button">Completado</button>
+                  <button class="btn btn-small btn-process" data-action="process" data-id="${record.id}" type="button">En proceso</button>
+                </div>
+              </article>
+            `
+          )
+          .join('');
+      }
+
+      function addRecord(record) {
+        const records = loadRecords();
+        records.unshift(record);
+        saveRecords(records);
+      }
+
+      function updateRecordStatus(recordId, status) {
+        const records = loadRecords();
+        const index = records.findIndex((record) => String(record.id) === String(recordId));
+        if (index === -1) {
+          return;
+        }
+
+        records[index].status = status;
+        saveRecords(records);
+        showNotification(status === 'completed' ? 'Registro marcado como completado.' : 'Registro devuelto a proceso.', 'success');
+        const session = loadSession();
+        if (session?.role === 'marketing') {
+          renderMarketingDashboard(session);
+        }
+        if (session?.role === 'psicologia') {
+          renderPsychologyDashboard(session);
+        }
+      }
+
+      function clearJobForm() {
+        const session = loadSession();
+        jobForm.reset();
+        if (session) {
+          setAssignedPsychologist(session);
+        }
+        clearFieldErrors();
+      }
+
+      navRecordsBtn.addEventListener('click', () => {
+        const session = loadSession();
+        if (!session) {
+          return;
+        }
+
+        if (session.role === 'psicologia') {
+          showPsychologyPage('records');
+          renderPsychologyRecordsSection();
+          showNotification('Vista de registros aplicada.', 'info');
+          return;
+        }
+
+        if (session.role === 'marketing') {
+          marketingRecordsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setNavActive('records');
+          showNotification('Marketing: vista de registros activa.', 'info');
+        }
+      });
+
+      navFormBtn.addEventListener('click', () => {
+        const session = loadSession();
+        if (!session) {
+          return;
+        }
+
+        if (session.role === 'psicologia') {
+          showPsychologyPage('form');
+          showNotification('Vista de formulario aplicada.', 'info');
+        }
+      });
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const role = roleSelect.value;
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        hydrateUsersFromBackend().finally(() => {
+          const session = attemptLogin(role, email, password, cachedUsers.length ? cachedUsers : getAvailableUsers());
+          loginError.classList.toggle('show', !session);
+
+          if (!session) {
+            return;
+          }
+
+          hydrateRecordsFromBackend().finally(() => {
+            if (session.role === 'psicologia') {
+              renderPsychologyDashboard(session);
+            } else {
+              renderMarketingDashboard(session);
+            }
+          });
+        });
+      });
+
+
+
+      if (openCreateUserBtn) {
+        openCreateUserBtn.addEventListener('click', () => {
+          openCreateUserPanel();
+        });
+      }
+
+      if (closeCreateUserBtn) {
+        closeCreateUserBtn.addEventListener('click', closeCreateUserPanel);
+      }
+
+      if (saveCreateUserBtn) {
+        saveCreateUserBtn.addEventListener('click', async () => {
+          setCreateUserMessage('', '');
+
+          await hydrateUsersFromBackend();
+          const result = createPsychologyUser({
+            name: createUserNameInput?.value,
+            email: createUserEmailInput?.value,
+            password: createUserPasswordInput?.value
+          });
+
+          if (!result.ok) {
+            setCreateUserMessage(result.message, 'error');
+            return;
+          }
+
+          setCreateUserMessage(result.message, 'success');
+          showNotification(result.message, 'success');
+          window.alert(`${result.message} Ahora puedes iniciar sesión con el usuario nuevo.`);
+          if (result.createdUser) {
+            roleSelect.value = 'psicologia';
+            emailInput.value = result.createdUser.email;
+            passwordInput.value = result.createdUser.password;
+          }
+          setTimeout(() => {
+            closeCreateUserPanel();
+            if (emailInput) {
+              emailInput.focus();
+            }
+          }, 1200);
+        });
+      }
+
+      if (psychologySearchInput) {
+        psychologySearchInput.addEventListener('input', () => {
+          currentPsychologySearch = psychologySearchInput.value;
+          currentPsychologyPage = 1;
+          renderPsychologyRecordsSection();
+        });
+      }
+
+      [logoutBtnPsychology, logoutBtnMarketing].forEach((button) => {
+        button.addEventListener('click', () => {
+          clearSession();
+          loginForm.reset();
+          loginError.classList.remove('show');
+          roleSelect.value = 'psicologia';
+          showLogin();
+        });
+      });
+
+      formFields.forEach((fieldName) => {
+        const fieldElement = document.getElementById(fieldName);
+        if (!fieldElement) {
+          return;
+        }
+
+        fieldElement.addEventListener('blur', () => {
+          const validationResult = validateJobForm();
+          setFieldError(fieldName, validationResult.errors[fieldName] || '');
+        });
+      });
+
+      jobForm.querySelectorAll('input, textarea').forEach((fieldElement) => {
+        if (fieldElement.type === 'hidden') {
+          return;
+        }
+
+        attachEmojiSanitizer(fieldElement);
+      });
+
+      jobForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const validation = validateJobForm();
+
+        if (!validation.isValid) {
+          const firstError = Object.values(validation.errors).find((message) => Boolean(message));
+          showNotification(firstError || 'Hay un problema con el registro. Revisa los campos obligatorios.', 'error');
+          return;
+        }
+
+        addRecord({
+          id: Date.now(),
+          psicologo: validation.values.psicologo,
+          cargo: validation.values.cargo,
+          ciudad: validation.values.ciudad,
+          funciones: validation.values.funciones,
+          requisitos: validation.values.requisitos,
+          habilidades: validation.values.habilidades,
+          salario: validation.values.salario,
+          contrato: validation.values.contrato,
+          beneficios: validation.values.beneficios,
+          horarios: validation.values.horarios,
+          correo: validation.values.correo,
+          wtpp: validation.values.wtpp,
+          status: 'in_process',
+          createdAt: new Date().toISOString()
+        });
+
+        psychologyToast.classList.add('show');
+        const activeSession = loadSession();
+        if (activeSession?.role === 'marketing') {
+          renderMarketingDashboard(activeSession);
+        } else {
+          renderPsychologyDashboard(activeSession);
+        }
+
+        setTimeout(() => {
+          psychologyToast.classList.remove('show');
+        }, 2500);
+
+        clearJobForm();
+      });
+
+      jobForm.addEventListener('reset', () => {
+        setTimeout(() => {
+          clearFieldErrors();
+        }, 0);
+      });
+
+      recordsList.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action]');
+        if (!button) {
+          return;
+        }
+
+        const action = button.getAttribute('data-action');
+        const recordId = button.getAttribute('data-id');
+        if (action === 'view') {
+          selectedMarketingRecordId = recordId;
+          renderMarketingDetail();
+          renderMarketingRecords();
+          return;
+        }
+
+        if (action === 'complete') {
+          updateRecordStatus(recordId, 'completed');
+        }
+
+        if (action === 'process') {
+          updateRecordStatus(recordId, 'in_process');
+        }
+      });
+
+      psychologyRecordsList.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-action="view-psychology"]');
+        if (!button) {
+          return;
+        }
+
+        selectedPsychologyRecordId = button.getAttribute('data-id');
+        renderPsychologyRecordEditor();
+        renderPsychologyRecordsSection();
+      });
+
+      prevPageBtn.addEventListener('click', () => {
+        if (currentMarketingPage > 1) {
+          currentMarketingPage -= 1;
+          renderMarketingRecords();
+        }
+      });
+
+      nextPageBtn.addEventListener('click', () => {
+        const totalPages = Math.max(1, Math.ceil(getFilteredRecords().length / PAGE_SIZE));
+        if (currentMarketingPage < totalPages) {
+          currentMarketingPage += 1;
+          renderMarketingRecords();
+        }
+      });
+
+      refreshRecordsBtn.addEventListener('click', () => {
+        renderMarketingRecords();
+        showNotification('Vista de marketing actualizada.', 'info');
+      });
+
+      psychologyDateFilter.addEventListener('change', () => {
+        currentPsychologyDateFilter = psychologyDateFilter.value;
+        currentPsychologyPage = 1;
+        showNotification(currentPsychologyDateFilter ? `Filtro de fecha aplicado: ${currentPsychologyDateFilter}.` : 'Filtro de fecha limpiado.', 'info');
+        renderPsychologyRecordsSection();
+      });
+
+      psychologyResetFilterBtn.addEventListener('click', () => {
+        currentPsychologyDateFilter = '';
+        currentPsychologySearch = '';
+        psychologyDateFilter.value = '';
+        if (psychologySearchInput) {
+          psychologySearchInput.value = '';
+        }
+        currentPsychologyPage = 1;
+        showNotification('Filtro de fecha limpiado.', 'info');
+        renderPsychologyRecordsSection();
+      });
+
+      psychologyPrevPageBtn.addEventListener('click', () => {
+        if (currentPsychologyPage > 1) {
+          currentPsychologyPage -= 1;
+          renderPsychologyRecordsSection();
+        }
+      });
+
+      psychologyNextPageBtn.addEventListener('click', () => {
+        const totalPages = Math.max(1, Math.ceil(getPsychologyFilteredRecords().length / PAGE_SIZE));
+        if (currentPsychologyPage < totalPages) {
+          currentPsychologyPage += 1;
+          renderPsychologyRecordsSection();
+        }
+      });
+
+      window.addEventListener('scroll', updateTopbarVisibility, { passive: true });
+
+      statusFilter.addEventListener('change', () => {
+        currentMarketingFilter = statusFilter.value;
+        currentMarketingPage = 1;
+        selectedMarketingRecordId = null;
+        showNotification(`Filtro de marketing aplicado: ${statusFilter.options[statusFilter.selectedIndex].text}.`, 'info');
+        const session = loadSession();
+        if (session && session.role === 'marketing') {
+          renderMarketingDashboard(session);
+        } else {
+          renderMarketingRecords();
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateTopbarVisibility();
+        hydrateUsersFromBackend().catch(() => {});
+        const session = loadSession();
+        if (session && PROFILES[session.role]) {
+          hydrateRecordsFromBackend().finally(() => {
+            if (session.role === 'psicologia') {
+              setAssignedPsychologist(session);
+              renderPsychologyDashboard(session);
+              showNotification('Sesión de psicología iniciada.', 'success');
+              showPsychologyPage('form');
+            } else {
+              renderMarketingDashboard(session);
+              showNotification('Sesión de marketing iniciada.', 'success');
+            }
+          });
+        } else {
+          showLogin();
+        }
+      });
+    </script>
+  </body>
+</html>
