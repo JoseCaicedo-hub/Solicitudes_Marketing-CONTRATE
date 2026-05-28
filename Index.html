@@ -46,6 +46,24 @@
         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: var(--text);
         background: #fff1e1;
+        padding-top: 92px;
+        /* Espacio extra para que el footer fijo no tape botones (ej. formulario Psicologia) */
+        padding-bottom: 200px;
+        overflow-y: auto;
+      }
+
+      body.login-mode {
+        padding-top: 0;
+        padding-bottom: 0;
+        overflow: hidden;
+      }
+
+      body.login-mode .app-shell {
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
       }
 
       body::before {
@@ -64,17 +82,19 @@
       }
 
       .topbar {
-        max-width: 1240px;
-        margin: 0 auto 24px;
+        max-width: 1400px;
+        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         gap: 16px;
         align-items: center;
-        position: sticky;
+        position: fixed;
         top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
         z-index: 60;
-        padding: 10px 14px;
-        border-radius: 14px;
+        padding: 14px 18px;
+        border-radius: 16px;
         background: rgba(255, 246, 235, 0.82);
         backdrop-filter: blur(14px);
         transition: transform 0.22s ease, opacity 0.22s ease;
@@ -116,10 +136,11 @@
         padding: 8px 12px;
       }
 
+      /* Header fijo: no se oculta al hacer scroll */
       .topbar.is-hidden {
-        transform: translateY(-120%);
-        opacity: 0;
-        pointer-events: none;
+        transform: translateX(-50%);
+        opacity: 1;
+        pointer-events: auto;
       }
 
       .topbar.hidden {
@@ -182,8 +203,17 @@
         grid-template-columns: minmax(0, 520px);
         gap: 24px;
         justify-content: center;
-        align-content: center;
+        align-content: start;
         min-height: calc(100vh - 64px);
+      }
+
+      /* Login: mantener la tarjeta fija (sin que se re-centre/mueva por layout) */
+      #loginView {
+        position: relative;
+      }
+
+      #loginView .login-panel {
+        position: static;
       }
 
       .panel {
@@ -642,8 +672,9 @@
       }
 
       .app-footer {
+        width: calc(100% - 32px);
         max-width: 1240px;
-        margin: 10px auto 0;
+        margin: 0;
         padding: 18px 24px;
         background: rgba(255, 255, 255, 0.92);
         border: 1px solid rgba(242, 140, 40, 0.16);
@@ -653,7 +684,11 @@
         color: var(--muted);
         font-size: 14px;
         line-height: 1.5;
-        position: relative;
+        position: fixed;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 50;
         overflow: hidden;
       }
 
@@ -1470,6 +1505,9 @@
                   <button class="btn btn-primary" type="submit">Guardar registro</button>
                   <button class="btn btn-secondary" type="reset">Limpiar formulario</button>
                   <div class="toast" id="psychologyToast">Registro guardado y enviado a marketing en estado de proceso.</div>
+                  <br></br>
+                  <br></br>
+                  <br></br>  
                 </div>
               </div>
               </form>
@@ -2227,6 +2265,8 @@
 
       function renderPsychologyDashboard(session) {
         const stats = getRecordStats();
+        document.body.classList.remove('login-mode');
+        document.body.classList.add('dashboard-mode');
         appTopbar.classList.remove('topbar--marketing');
         if (topbarTitle) {
           topbarTitle.textContent = 'CONTRATE | Psicologia';
@@ -2263,6 +2303,8 @@
 
       function renderMarketingDashboard(session) {
         const stats = getRecordStats();
+        document.body.classList.remove('login-mode');
+        document.body.classList.add('dashboard-mode');
         appTopbar.classList.remove('hidden');
         appTopbar.classList.add('topbar--marketing');
         if (topbarTitle) {
@@ -2309,6 +2351,8 @@
       }
 
       function showLogin() {
+        document.body.classList.add('login-mode');
+        document.body.classList.remove('dashboard-mode');
         loginView.classList.remove('hidden');
         dashboardView.classList.add('hidden');
         dashboardView.removeAttribute('data-psychology-view');
@@ -2364,10 +2408,8 @@
       }
 
       function updateTopbarVisibility() {
+        // Header fijo: no se oculta al hacer scroll
         const currentScrollY = window.scrollY || 0;
-        const shouldHide = currentScrollY > 80 && currentScrollY < lastScrollY;
-        isTopbarHidden = shouldHide;
-        appTopbar.classList.toggle('is-hidden', shouldHide);
         lastScrollY = currentScrollY;
       }
 
@@ -3221,7 +3263,8 @@
         }
       });
 
-      window.addEventListener('scroll', updateTopbarVisibility, { passive: true });
+      // No modificar visibilidad/posición del header en scroll (header fijo)
+      window.removeEventListener('scroll', updateTopbarVisibility);
 
       statusFilter.addEventListener('change', () => {
         currentMarketingFilter = statusFilter.value;
